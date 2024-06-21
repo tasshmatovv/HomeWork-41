@@ -1,6 +1,7 @@
 package month6.Echo.EchoClient;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.NoSuchElementException;
@@ -26,6 +27,8 @@ public class EchoClient {
       var scanner = new Scanner(System.in, "UTF-8");
       var output = socket.getOutputStream();
       var writer = new PrintWriter(output);
+      var reader = new InputStreamReader(socket.getInputStream(), "UTF-8");
+      var stringBuilder = new StringBuilder();
       try (scanner; writer) {
         while (true) {
           String message = scanner.nextLine();
