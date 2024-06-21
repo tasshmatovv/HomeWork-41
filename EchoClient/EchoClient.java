@@ -35,6 +35,17 @@ public class EchoClient {
           writer.write(message);
           writer.write(System.lineSeparator());
           writer.flush();
+
+          int ch;
+
+          while((ch = reader.read()) != '\n'){
+            stringBuilder.append((char) ch);
+          }
+
+          String response = stringBuilder.toString().trim();
+          stringBuilder.setLength(0);
+          System.out.println("Server: "+ response);
+
           if ("bye".equals(message.toLowerCase())) {
             return;
           }
