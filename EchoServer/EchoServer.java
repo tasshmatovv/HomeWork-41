@@ -29,5 +29,14 @@ public class EchoServer {
     }
   }
 
+  private void handle(Socket clientSocket){
+    InformationProcessor p = new InformationProcessor();
+    try {
+      p.handle(clientSocket);
+    }catch (IOException e){
+      System.out.println("Ошибка при подключении");
+      e.printStackTrace();
+    }
+  }
 
 }

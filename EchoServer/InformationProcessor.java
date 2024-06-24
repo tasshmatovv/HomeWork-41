@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class InformationProcessor {
-    private void handle(Socket socket) throws IOException {
+    public void handle(Socket socket) throws IOException {
         var input = socket.getInputStream();
         var isr = new InputStreamReader(input, "UTF-8");
         var output = socket.getOutputStream();
