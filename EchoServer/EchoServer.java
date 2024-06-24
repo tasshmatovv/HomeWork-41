@@ -39,8 +39,7 @@ public class EchoServer {
       while (true) {
         var message = scanner.nextLine().strip();
         System.out.printf("Got: %s%n", message);
-        var reversedMessage = new StringBuilder(message).reverse().toString();
-        writer.println(reversedMessage);
+        writer.println(message);
         if (message.toLowerCase().equals("bye")) {
           System.out.println("Bye bye");
           return;
