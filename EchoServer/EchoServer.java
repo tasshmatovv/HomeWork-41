@@ -19,8 +19,12 @@ public class EchoServer {
 
   public void run() {
     try (var server = new ServerSocket(port)) {
-      try (var clientSocket = server.accept()) {
-        handle(clientSocket);
+//      try (var clientSocket = server.accept()) {
+//        handle(clientSocket);
+//      }
+      while (!server.isClosed()){
+        Socket socket = server.accept();
+        handle(socket);
       }
     } catch (IOException e) {
       var formatMsg = "Вероятнее всего порт %s занят.%n";
