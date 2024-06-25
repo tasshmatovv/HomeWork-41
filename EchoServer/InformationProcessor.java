@@ -7,6 +7,14 @@ import java.util.Scanner;
 
 public class InformationProcessor {
 
+    private final EchoServer server;
+    private final Socket socket;
+
+    public InformationProcessor(EchoServer server, Socket socket) {
+        this.server = server;
+        this.socket = socket;
+    }
+
     private boolean isEmptyMsg(String message){
         return message == null || message.isBlank();
     }
@@ -39,21 +47,25 @@ public class InformationProcessor {
         try(socket;
             Scanner reader = getReader(socket);
             PrintWriter writer = getWriter(socket)) {
-            sendResponse("Привет"+ socket.getPort(),writer);
+            sendResponse("Привет " + socket.getPort(), writer);
             while (true) {
                 String message = reader.nextLine().strip();
                 writer.println(message);
-                if (isEmptyMsg(message)|| isQuitMsg(message)) {
+                if (isEmptyMsg(message) || isQuitMsg(message)) {
                     return;
-                }
-                sendResponse(message.toUpperCase(),writer);
-            }
 
-        } catch (NoSuchElementException ex) {
+                }
+                server.broadcastMessage(message.toUpperCase(),socket);
+                sendResponse(message.toUpperCase(), writer);
+            }
+        }catch (NoSuchElementException ex) {
             System.out.println("Client dropped connection");
         }catch (IOException e){
             e.printStackTrace();
+        }finally {
+            server.removeClient(socket);
+            System.out.printf("клиент отключен: %s%n",socket.getPort() );
+
         }
-        System.out.printf("клиент отключен: %s%n",socket.getPort() );
     }
 }
