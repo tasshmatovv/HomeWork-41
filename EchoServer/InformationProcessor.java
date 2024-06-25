@@ -9,10 +9,12 @@ public class InformationProcessor {
 
     private final EchoServer server;
     private final Socket socket;
+    private final String name;
 
-    public InformationProcessor(EchoServer server, Socket socket) {
+    public InformationProcessor(EchoServer server, Socket socket, String name) {
         this.server = server;
         this.socket = socket;
+        this.name = name;
     }
 
     private boolean isEmptyMsg(String message){
@@ -42,29 +44,29 @@ public class InformationProcessor {
     }
 
     public void handle(Socket socket)  {
-        System.out.printf("Подключен клиент: %s%n",socket.getPort());
+        System.out.printf("Подключен клиент: %s%n",socket.getPort(),name);
 
         try(socket;
             Scanner reader = getReader(socket);
             PrintWriter writer = getWriter(socket)) {
-            sendResponse("Привет " + socket.getPort(), writer);
+            sendResponse("Привет " + name, writer);
             while (true) {
                 String message = reader.nextLine().strip();
                 writer.println(message);
                 if (isEmptyMsg(message) || isQuitMsg(message)) {
                     return;
                 }
-                server.broadcastMessage(message,socket);
-                sendResponse(message.toUpperCase(), writer);
+                String responce = name + ":" + message;
+                server.broadcastMessage(responce,socket);
             }
         }catch (NoSuchElementException ex) {
             System.out.println("Client dropped connection");
         }catch (IOException e){
             e.printStackTrace();
         }finally {
+            server.releaseName(name);
             server.removeClient(socket);
-            System.out.printf("клиент отключен: %s%n",socket.getPort() );
-
+            System.out.printf("клиент отключен: %s%n",socket.getPort(),name );
         }
     }
 
