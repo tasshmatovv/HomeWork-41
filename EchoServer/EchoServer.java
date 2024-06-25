@@ -46,7 +46,7 @@ public class EchoServer {
       if (!client.equals(sender)){
         try {
           PrintWriter writer = new PrintWriter( new OutputStreamWriter(client.getOutputStream(), "UTF-8"), true);
-          System.out.println(message);
+          System.out.println(client.getPort() + ": " + message);
       }catch (IOException e){
           e.printStackTrace();
         }

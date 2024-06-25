@@ -53,9 +53,8 @@ public class InformationProcessor {
                 writer.println(message);
                 if (isEmptyMsg(message) || isQuitMsg(message)) {
                     return;
-
                 }
-                server.broadcastMessage(message.toUpperCase(),socket);
+                server.broadcastMessage(message,socket);
                 sendResponse(message.toUpperCase(), writer);
             }
         }catch (NoSuchElementException ex) {
@@ -68,4 +67,6 @@ public class InformationProcessor {
 
         }
     }
+
+
 }
