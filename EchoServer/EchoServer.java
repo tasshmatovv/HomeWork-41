@@ -1,7 +1,4 @@
 package month6.Echo.EchoServer;
-
-import com.sun.source.doctree.SeeTree;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,6 +14,7 @@ public class EchoServer {
 
   public EchoServer(int port) {
     this.port = port;
+
   }
 
   public static EchoServer bindToPort(int port) {
@@ -61,13 +59,13 @@ public class EchoServer {
     }
   }
 
-  public void broadcastMessage(String message, Socket sender){
-    for (Socket client: clients){
-      if (!client.equals(sender)){
+  public void broadcastMessage(String message, Socket sender) {
+    for (Socket client : clients) {
+      if (!client.equals(sender)) {
         try {
-          PrintWriter writer = new PrintWriter( new OutputStreamWriter(client.getOutputStream(), "UTF-8"), true);
-          System.out.println(client.getPort() + ": " + message);
-      }catch (IOException e){
+          PrintWriter writer = new PrintWriter(new OutputStreamWriter(client.getOutputStream(), "UTF-8"), true);
+          writer.println(message);
+        } catch (IOException e) {
           e.printStackTrace();
         }
       }
@@ -77,4 +75,5 @@ public class EchoServer {
   public void removeClient(Socket socket) {
     clients.remove(socket);
   }
+
 }

@@ -1,19 +1,19 @@
 package month6.Echo.EchoServer;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.Set;
 
 public class InformationProcessor {
 
     private final EchoServer server;
-    private final Socket socket;
     private final String name;
 
     public InformationProcessor(EchoServer server, Socket socket, String name) {
         this.server = server;
-        this.socket = socket;
         this.name = name;
     }
 
@@ -52,7 +52,6 @@ public class InformationProcessor {
             sendResponse("Привет " + name, writer);
             while (true) {
                 String message = reader.nextLine().strip();
-                writer.println(message);
                 if (isEmptyMsg(message) || isQuitMsg(message)) {
                     return;
                 }
@@ -66,9 +65,7 @@ public class InformationProcessor {
         }finally {
             server.releaseName(name);
             server.removeClient(socket);
-            System.out.printf("клиент отключен: %s%n",socket.getPort(),name );
+            System.out.printf("Клиент %s отключился",name );
         }
     }
-
-
 }
